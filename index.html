@@ -29,6 +29,46 @@ body{
     color:#dddddd;
     margin:6px 0 0;
 }
+/* 搜索栏样式 */
+.search-bar{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    max-width:800px;
+    margin:0 auto 30px;
+}
+#search-input{
+    flex:1;
+    padding:10px 14px;
+    font-size:16px;
+    background:#222831;
+    border:1px solid #445566;
+    color:#fff;
+    border-radius:6px;
+    outline:none;
+}
+#search-input:focus{
+    border-color:#72ccff;
+}
+#engine-select{
+    padding:10px 8px;
+    background:#222831;
+    color:#fff;
+    border:1px solid #445566;
+    border-radius:6px;
+}
+#search-btn{
+    padding:10px 20px;
+    background:#3474c9;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+}
+#search-btn:hover{
+    background:#4388e2;
+}
 .warning-box{
     border:2px solid #ff6b6b;
     background:#2c1c1c;
@@ -82,6 +122,18 @@ a:hover{
 <div class="header-title">
     <p class="en-title">Carp Studio</p>
     <p class="cn-title">鲤鱼工作室</p>
+</div>
+
+<!-- ======== 新增搜索区域 ======== -->
+<div class="search-bar">
+    <input id="search-input" placeholder="输入关键词搜索...">
+    <select id="engine-select">
+        <option value="baidu">百度</option>
+        <option value="bing">必应</option>
+        <option value="ddg">DuckDuckGo</option>
+        <option value="google">Google</option>
+    </select>
+    <button id="search-btn">搜索</button>
 </div>
 
 <div class="warning-box">
@@ -343,6 +395,32 @@ a:hover{
 <div class="footer-note">
 Carp Studio 鲤鱼工作室 · 资源导航站
 </div>
+
+<script>
+const input = document.getElementById('search-input');
+const select = document.getElementById('engine-select');
+const btn = document.getElementById('search-btn');
+
+// 搜索引擎地址模板
+const engines = {
+    baidu: "https://www.baidu.com/s?wd={key}",
+    bing: "https://cn.bing.com/search?q={key}",
+    ddg: "https://duckduckgo.com/?q={key}",
+    google: "https://www.google.com/search?q={key}"
+};
+
+function doSearch(){
+    let keyword = input.value.trim();
+    if(!keyword) return;
+    let url = engines[select.value].replace("{key}", encodeURIComponent(keyword));
+    window.open(url, "_blank"); //新标签打开
+}
+
+btn.onclick = doSearch;
+input.onkeydown = function(e){
+    if(e.key === "Enter") doSearch();
+}
+</script>
 
 </body>
 </html>
